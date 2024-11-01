@@ -65,7 +65,7 @@ list(APPEND lilacsat_sources
     codec2/postfilter.c
     codec2/quantise.c
     codec2/sine.c
-    serial/serial.c
+    #serial/serial.c
     afsk1200_rx_f_impl.cc
     afsk1200_tx_f_impl.cc
     angle_cf_impl.cc
@@ -86,13 +86,13 @@ list(APPEND lilacsat_sources
     kiss_encode_pdu_impl.cc
     lilacsat1_frame_depack_impl.cc
     pdu_f32_to_u8_impl.cc
-    pipe_sink_pdu_impl.cc
+    #pipe_sink_pdu_impl.cc
     plan13/Plan13.cpp
     plan13_cc_impl.cc
     print_to_file_b_impl.cc
     rs_decode_pdu_impl.cc
     satellite_channel_cc_impl.cc
-    serial_sink_pdu_impl.cc
+    #serial_sink_pdu_impl.cc
     sync_det_b_impl.cc
     two_bit_dpd_frame_recovery_impl.cc
     two_bit_dpd_precoder_impl.cc

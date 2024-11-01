@@ -33,9 +33,6 @@
 
 #include <stdio.h>
 
-extern char sequence[255];
-extern unsigned char m_decode_tab[];
-
 #define	LEN_FRAME	116
 #define	SYNC_WORD	0x1ACFFC1D
 

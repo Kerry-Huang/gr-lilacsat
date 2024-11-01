@@ -31,6 +31,7 @@
 
 #include <gnuradio/io_signature.h>
 #include "fec_encode_b_impl.h"
+#include <windows.h>
 
 #include <stdio.h>
 
@@ -110,7 +111,7 @@ namespace gr {
 		d_ptt = 0;
 	}
 	
-	if(n_ret == 0) usleep(1000);
+	if(n_ret == 0) Sleep(1);
 
         // Tell runtime system how many output items we produced.
         return n_ret;

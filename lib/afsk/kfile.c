@@ -144,13 +144,13 @@ inline int kfile_flush(struct KFile *fd)
 	return fd->flush(fd);
 }
 
-inline int kfile_error(struct KFile *fd)
+int kfile_error(struct KFile *fd)
 {
 //	ASSERT(fd->error);
 	return fd->error(fd);
 }
 
-inline void kfile_clearerr(struct KFile *fd)
+void kfile_clearerr(struct KFile *fd)
 {
 //	ASSERT(fd->clearerr);
 	fd->clearerr(fd);

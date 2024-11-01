@@ -43,11 +43,11 @@ namespace gr {
     class satellite_channel_cc_impl : public satellite_channel_cc
     {
      private:
-	double d_theta;// 地心角
+	double d_theta;
 	double d_theta0;
 	double d_d_theta;
-	float d_omega;// 卫星角速度
-	double d_current_phase;// DCO相位
+	float d_omega;
+	double d_current_phase;
 
 	float d_r_semi_long_axis;
 	float d_alpha_aos;

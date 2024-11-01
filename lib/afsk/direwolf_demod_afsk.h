@@ -145,18 +145,18 @@ struct demodulator_state_s
 
 	int pre_filter_size;	/* Size of pre filter, in audio samples. */
 
-	float pre_filter[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float pre_filter[MAX_FILTER_SIZE];
 
 
 /*
  * Kernel for the mark and space detection filters.
  */
 
-	float m_sin_table[MAX_FILTER_SIZE] __attribute__((aligned(16)));
-	float m_cos_table[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float m_sin_table[MAX_FILTER_SIZE];
+	__declspec(align(16)) float m_cos_table[MAX_FILTER_SIZE];
 
-	float s_sin_table[MAX_FILTER_SIZE] __attribute__((aligned(16)));
-	float s_cos_table[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float s_sin_table[MAX_FILTER_SIZE];
+	__declspec(align(16)) float s_cos_table[MAX_FILTER_SIZE];
 
 
 /*
@@ -169,7 +169,7 @@ struct demodulator_state_s
 /*
  * Most recent raw audio samples, before/after prefiltering.
  */
-	float raw_cb[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float raw_cb[MAX_FILTER_SIZE];
 
 /*
  * Use half of the AGC code to get a measure of input audio amplitude.
@@ -186,7 +186,7 @@ struct demodulator_state_s
  * Input to the mark/space detector.
  * Could be prefiltered or raw audio.
  */
-	float ms_in_cb[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float ms_in_cb[MAX_FILTER_SIZE];
 
 /*
  * Outputs from the mark and space amplitude detection,
@@ -194,10 +194,10 @@ struct demodulator_state_s
  * Kernel for the lowpass filters.
  */
 
-	float m_amp_cb[MAX_FILTER_SIZE] __attribute__((aligned(16)));
-	float s_amp_cb[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float m_amp_cb[MAX_FILTER_SIZE];
+	__declspec(align(16)) float s_amp_cb[MAX_FILTER_SIZE];
 
-	float lp_filter[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+	__declspec(align(16)) float lp_filter[MAX_FILTER_SIZE];
 
 
 	float m_peak, s_peak;
@@ -314,8 +314,8 @@ struct demodulator_state_s
 
 		bp_window_t pre_window;
 
-		float audio_in[MAX_FILTER_SIZE] __attribute__((aligned(16)));
-		float pre_filter[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+		__declspec(align(16)) float audio_in[MAX_FILTER_SIZE];
+		__declspec(align(16)) float pre_filter[MAX_FILTER_SIZE];
 
 	// Use local oscillator or correlate with previous sample.
 
@@ -328,8 +328,8 @@ struct demodulator_state_s
 
 		// After mixing with LO before low pass filter.
 
-		float I_raw[MAX_FILTER_SIZE] __attribute__((aligned(16)));	// signal * LO cos.
-		float Q_raw[MAX_FILTER_SIZE] __attribute__((aligned(16)));	// signal * LO sin.
+		__declspec(align(16)) float I_raw[MAX_FILTER_SIZE];	// signal * LO cos.
+		__declspec(align(16)) float Q_raw[MAX_FILTER_SIZE];	// signal * LO sin.
 
 		// Number of delay line taps into previous symbol.
 		// They are one symbol period and + or - 45 degrees of the carrier frequency.
@@ -341,7 +341,7 @@ struct demodulator_state_s
 		float delay_line_width_sym;
 		int delay_line_taps;	// In audio samples.
 
-		float delay_line[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+		__declspec(align(16)) float delay_line[MAX_FILTER_SIZE];
 
 	// Low pass filter Second is frequency as ratio to baud rate for FIR.
 
@@ -357,7 +357,7 @@ struct demodulator_state_s
 
 		bp_window_t lp_window;
 
-		float lp_filter[MAX_FILTER_SIZE] __attribute__((aligned(16)));
+		__declspec(align(16)) float lp_filter[MAX_FILTER_SIZE];
 
 	  } psk;
 
@@ -421,6 +421,11 @@ void demod_afsk_process_sample (int chan, int subchan, int sam, struct demodulat
 
 #ifndef DCD_GOOD_WIDTH
 #define DCD_GOOD_WIDTH 512		// No more than 1024!!!
+#endif
+
+#ifdef _MSC_VER
+#  include <intrin.h>
+#  define __builtin_popcount __popcnt
 #endif
 
 #endif

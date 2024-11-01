@@ -44,7 +44,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <sys/stat.h>
 #include <string.h>
 #include <assert.h>
@@ -88,7 +88,7 @@ static inline float z (float x, float y)
 
 /* Add sample to buffer and shift the rest down. */
 
-__attribute__((hot)) __attribute__((always_inline))
+//__attribute__((hot)) __attribute__((always_inline))
 static inline void push_sample (float val, float *buff, int size)
 {
 	memmove(buff+1,buff,(size-1)*sizeof(float));
@@ -98,8 +98,9 @@ static inline void push_sample (float val, float *buff, int size)
 
 /* FIR filter kernel. */
 
-__attribute__((hot)) __attribute__((always_inline))
-static inline float convolve (const float *__restrict__ data, const float *__restrict__ filter, int filter_size)
+//__attribute__((hot)) __attribute__((always_inline))
+//static inline float convolve (const float *__restrict__ data, const float *__restrict__ filter, int filter_size)
+static inline float convolve (const float *__restrict data, const float *__restrict filter, int filter_size)
 {
 	float sum = 0.0f;
 	int j;
@@ -116,7 +117,7 @@ static inline float convolve (const float *__restrict__ data, const float *__res
 /* Automatic gain control. */
 /* Result should settle down to 1 unit peak to peak.  i.e. -0.5 to +0.5 */
 
-__attribute__((hot)) __attribute__((always_inline))
+//__attribute__((hot)) __attribute__((always_inline))
 static inline float agc (float in, float fast_attack, float slow_decay, float *ppeak, float *pvalley)
 {
 	if (in >= *ppeak) {
@@ -597,7 +598,7 @@ failed experiment
 
 inline static void nudge_pll (int chan, int subchan, int slice, int demod_data, struct demodulator_state_s *D);
 
-__attribute__((hot))
+//__attribute__((hot))
 void demod_afsk_process_sample (int chan, int subchan, int sam, struct demodulator_state_s *D)
 {
 	float fsam;
@@ -960,7 +961,7 @@ int hdlc_rec_data_detect_any (int chan)
 } /* end hdlc_rec_data_detect_any */
 
 
-__attribute__((always_inline))
+//__attribute__((always_inline))
 inline static void pll_dcd_signal_transition2 (struct demodulator_state_s *D, int slice, int dpll_phase)
 {
 	if (dpll_phase > - DCD_GOOD_WIDTH * 1024 * 1024 && dpll_phase < DCD_GOOD_WIDTH * 1024 * 1024) {
@@ -972,7 +973,7 @@ inline static void pll_dcd_signal_transition2 (struct demodulator_state_s *D, in
 }
 
 
-__attribute__((always_inline))
+//__attribute__((always_inline))
 inline static void pll_dcd_each_symbol2 (struct demodulator_state_s *D, int chan, int subchan, int slice)
 {
 	D->slicer[slice].good_hist <<= 1;
@@ -1004,7 +1005,7 @@ inline static void pll_dcd_each_symbol2 (struct demodulator_state_s *D, int chan
 }
 
 
-__attribute__((hot))
+//__attribute__((hot))
 inline static void nudge_pll (int chan, int subchan, int slice, int demod_data, struct demodulator_state_s *D)
 {
 

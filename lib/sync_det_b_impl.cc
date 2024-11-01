@@ -32,7 +32,6 @@
 #include "sync_det_b_impl.h"
 
 extern char sequence[255];
-extern unsigned char m_decode_tab[];
 
 namespace gr {
   namespace lilacsat {

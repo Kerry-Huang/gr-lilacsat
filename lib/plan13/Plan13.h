@@ -185,7 +185,7 @@ char     SAT[20];
 long     SATNO;
 double   YE;
 double   TE;
-double   IN;
+double   IN_;
 double   RA;
 double   EC;
 double   WP;

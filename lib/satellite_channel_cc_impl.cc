@@ -32,6 +32,9 @@
 #include <gnuradio/io_signature.h>
 #include "satellite_channel_cc_impl.h"
 
+#include <Windows.h>
+#pragma execution_character_set("utf-8")
+
 namespace gr {
   namespace lilacsat {
 

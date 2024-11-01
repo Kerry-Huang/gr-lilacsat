@@ -13,7 +13,9 @@ typedef struct __attribute__((__packed__))
 } tm_header_t;
 */
 
-typedef struct __attribute__((__packed__))
+//typedef struct __attribute__((__packed__))
+#pragma pack(1)
+typedef struct
 {
 	unsigned int first_header_pointer		: 8;
 	unsigned int virtual_channel_frame_count	: 8;
@@ -23,7 +25,6 @@ typedef struct __attribute__((__packed__))
 	unsigned int spacecraft_id			: 10;
 	unsigned int version_number			: 2;
 } tm_header_t;
-
 
 #define LEN_TM_HEADER 	sizeof(tm_header_t)
 

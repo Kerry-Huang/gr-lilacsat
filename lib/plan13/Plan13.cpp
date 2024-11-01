@@ -140,7 +140,7 @@ void Plan13::initSat(void)
 
    /* Convert angles to radians, etc. */
   RA = rad(RA);
-  IN = rad(IN);
+  IN_ = rad(IN_);
   WP = rad(WP);
   MA = rad(MA);
   MM = MM * 2.0 * M_PI;
@@ -172,8 +172,8 @@ void Plan13::initSat(void)
   N0 = MM / 86400.0;                    /* Mean motion rads/s                */
   A0 = pow(GM / N0 / N0, 1.0 / 3.0);  /* Semi major axis km                */
   b0 = A0 * sqrt(1.0 - EC * EC);      /* Semi minor axis km                */
-  SI = sin(IN);
-  CI = cos(IN);
+  SI = sin(IN_);
+  CI = cos(IN_);
   PC = RE * A0 / (b0 * b0);
   PC = 1.5 * J2 * PC * PC * MM;       /* Precession const, rad/day         */
   QD = -PC * CI;                      /* Node Precession rate, rad/day     */
@@ -267,7 +267,7 @@ void Plan13::satvec(void)
   CQ = cos(RAAN);
   SQ = sin(RAAN);
 
-   /* Plane -> celestial coordinate transformation, [C] = [RAAN]*[IN]*[AP] */
+   /* Plane -> celestial coordinate transformation, [C] = [RAAN]*[IN_]*[AP] */
   CXx = CW * CQ - SW * CI * SQ;
   CXy = -SW * CQ - CW * CI * SQ;
   CXz = SI * SQ;
@@ -455,7 +455,7 @@ void Plan13::setTime(int yearIn, int monthIn, int mDayIn, int hourIn, int minIn,
 
 			YE = YE_in;
 			TE = TE_in;
-			IN = IN_in;
+			IN_ = IN_in;
 			RA = RA_in;
 			EC = EC_in;
 			WP = WP_in;
@@ -468,7 +468,7 @@ void Plan13::setTime(int yearIn, int monthIn, int mDayIn, int hourIn, int minIn,
 	  if (TEST) {// sample elements for AO-51
 	    YE = 1997.0;
         TE = 126.71404377;
-        IN = 98.5440;
+        IN_ = 98.5440;
         RA = 201.9624;
         EC = 0.0009615;
         WP = 356.5498;

@@ -5,7 +5,7 @@
 /**
  * \brief Compute the updated CRC-CCITT value for one octet (inline version)
  */
-inline uint16_t updcrc_ccitt(uint8_t c, uint16_t oldcrc)
+uint16_t updcrc_ccitt(uint8_t c, uint16_t oldcrc)
 {
 #if CPU_HARVARD
 	return (oldcrc >> 8) ^ pgm_read_uint16_t(&crc_ccitt_tab[(oldcrc ^ c) & 0xff]);

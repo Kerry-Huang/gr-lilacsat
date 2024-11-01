@@ -30,6 +30,7 @@
 #endif
 
 #include <gnuradio/io_signature.h>
+#include <windows.h>
 #include "afsk1200_tx_f_impl.h"
 
 #define ERROR()	std::cout << "Error!" << std::endl; //exit(0);
@@ -120,7 +121,7 @@ namespace gr {
 					}
 					else
 					{
-						return -2;//SSID数值过大
+						return -2;//SSID too big
 					}
 				}
 				else if(str.size()==i+4)
@@ -131,12 +132,12 @@ namespace gr {
 					}
 					else
 					{
-						return -2;//SSID数值过大
+						return -2;//SSID too big
 					}
 				}
 				else
 				{
-					return -3;//SSID字节数过多
+					return -3;//SSID byte to large
 				}
 				ax25call->ssid = ax25call->ssid ^ 0x40;
 			}
@@ -157,12 +158,12 @@ namespace gr {
 					}
 					else
 					{
-						return -2;//SSID数值过大
+						return -2;//SSID too big
 					}
 				}
 				else
 				{
-					return -3;//SSID字节数过多
+					return -3;//SSID byte to large
 				}
 			}
 			
@@ -178,7 +179,7 @@ namespace gr {
 		}
 		else
 		{
-			return -4;//非法字符或超长
+			return -4;
 			break;
 		}
 	}
@@ -304,7 +305,7 @@ namespace gr {
 		d_ptt = 0;
 	}
 	
-	if(n_ret == 0) usleep(1000);
+	if(n_ret == 0) Sleep(1);
 
         // Tell runtime system how many output items we produced.
         return n_ret;

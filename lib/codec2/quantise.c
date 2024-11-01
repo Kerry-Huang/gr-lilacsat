@@ -159,11 +159,27 @@ void encode_lspds_scalar(
 )
 {
     int   i,k,m;
-    float lsp_hz[order];
-    float lsp__hz[order];
-    float dlsp[order];
-    float dlsp_[order];
-    float wt[order];
+    // float lsp_hz[order];
+    // float lsp__hz[order];
+    // float dlsp[order];
+    // float dlsp_[order];
+    // float wt[order];
+
+    float *lsp_hz;
+    lsp_hz = (float *)malloc((order) * sizeof(float));
+
+    float *lsp__hz;
+    lsp__hz = (float *)malloc((order) * sizeof(float));
+
+    float *dlsp;
+    dlsp = (float *)malloc((order) * sizeof(float));
+
+    float *dlsp_;
+    dlsp_ = (float *)malloc((order) * sizeof(float));
+
+    float *wt;
+    wt = (float *)malloc((order) * sizeof(float));
+
     const float *cb;
     float se;
 
@@ -204,6 +220,12 @@ void encode_lspds_scalar(
 	//printf("%d lsp %3.2f dlsp %3.2f dlsp_ %3.2f lsp_ %3.2f\n", i, lsp_hz[i], dlsp[i], dlsp_[i], lsp__hz[i]);
     }
 
+
+  free(lsp_hz);
+  free(lsp__hz);
+  free(dlsp);
+  free(dlsp_);
+  free(wt);
 }
 
 
@@ -214,8 +236,15 @@ void decode_lspds_scalar(
 )
 {
     int   i,k;
-    float lsp__hz[order];
-    float dlsp_[order];
+    // float lsp__hz[order];
+    // float dlsp_[order];
+
+    float *lsp__hz;
+    lsp__hz = (float *)malloc((order) * sizeof(float));
+
+    float *dlsp_;
+    dlsp_ = (float *)malloc((order) * sizeof(float));
+
     const float *cb;
 
      for(i=0; i<order; i++) {
@@ -234,6 +263,8 @@ void decode_lspds_scalar(
 	//printf("%d dlsp_ %3.2f lsp_ %3.2f\n", i, dlsp_[i], lsp__hz[i]);
     }
 
+  free(lsp__hz);
+  free(dlsp_);
 }
 
 #ifdef __EXPERIMENTAL__
@@ -503,8 +534,24 @@ int find_nearest_weighted(const float *codebook, int nb_entries, float *x, const
 void lspjvm_quantise(float *x, float *xq, int order)
 {
   int i, n1, n2, n3;
-  float err[order], err2[order], err3[order];
-  float w[order], w2[order], w3[order];
+
+  // float err[order], err2[order], err3[order];
+
+  float *err;
+  err = (float *)malloc((order) * sizeof(float));
+  float *err2;
+  err2 = (float *)malloc((order) * sizeof(float));
+  float *err3;
+  err3 = (float *)malloc((order) * sizeof(float));  
+  
+  // float w[order], w2[order], w3[order];
+   float *w;
+  w = (float *)malloc((order) * sizeof(float));   
+  float *w2;
+  w2 = (float *)malloc((order) * sizeof(float));  
+  float *w3;
+  w3 = (float *)malloc((order) * sizeof(float));  
+
   const float *codebook1 = lsp_cbjvm[0].cb;
   const float *codebook2 = lsp_cbjvm[1].cb;
   const float *codebook3 = lsp_cbjvm[2].cb;
@@ -538,6 +585,14 @@ void lspjvm_quantise(float *x, float *xq, int order)
     xq[2*i] += codebook2[order*n2/2+i];
     xq[2*i+1] += codebook3[order*n3/2+i];
   }
+
+  free(err);
+  free(err2);
+  free(err3);
+  free(w);
+  free(w2);
+  free(w3);
+
 }
 
 
@@ -547,11 +602,17 @@ void lspjvm_quantise(float *x, float *xq, int order)
 float lspmelvq_quantise(float *x, float *xq, int order)
 {
   int i, n1, n2, n3;
-  float err[order];
+  // float err[order];
+  float *err;
+  err = (float *)malloc((order) * sizeof(float));
+
   const float *codebook1 = lspmelvq_cb[0].cb;
   const float *codebook2 = lspmelvq_cb[1].cb;
   const float *codebook3 = lspmelvq_cb[2].cb;
-  float tmp[order];
+  // float tmp[order];
+  float *tmp;
+  tmp = (float *)malloc((order) * sizeof(float));
+
   float mse;
 
   assert(order == lspmelvq_cb[0].k);
@@ -582,6 +643,9 @@ float lspmelvq_quantise(float *x, float *xq, int order)
   for (i=0; i<order; i++) {
       xq[i] = tmp[i];
   }
+
+  free(err);
+  free(tmp);
 
   return mse;
 }
@@ -712,8 +776,15 @@ float lspmelvq_mbest_encode(int *indexes, float *x, float *xq, int ndim, int mbe
   const float *codebook2 = lspmelvq_cb[1].cb;
   const float *codebook3 = lspmelvq_cb[2].cb;
   struct MBEST *mbest_stage1, *mbest_stage2, *mbest_stage3;
-  float target[ndim];
-  float w[ndim];
+  
+  // float target[ndim];
+  float *target;
+  target = (float *)malloc((ndim) * sizeof(float));
+
+  // float w[ndim];
+  float *w;
+  w = (float *)malloc((ndim) * sizeof(float));
+  
   int   index[MBEST_STAGES];
   float mse, tmp;
 
@@ -767,6 +838,9 @@ float lspmelvq_mbest_encode(int *indexes, float *x, float *xq, int ndim, int mbe
   mbest_destroy(mbest_stage3);
 
   indexes[0] = n1; indexes[1] = n2; indexes[2] = n3;
+
+  free(target);
+  free(w);
 
   return mse;
 }
@@ -1262,7 +1336,10 @@ float speech_to_uq_lsps(float lsp[],
 {
     int   i, roots;
     float Wn[M];
-    float R[order+1];
+    //float R[order+1];
+    float *R;
+    R = (float *)malloc((order+1) * sizeof(float));
+    
     float e, E;
 
     e = 0.0;
@@ -1301,6 +1378,7 @@ float speech_to_uq_lsps(float lsp[],
 	    lsp[i] = (PI/order)*(float)i;
     }
 
+    free(R);
     return E;
 }
 
@@ -1319,7 +1397,12 @@ void encode_lsps_scalar(int indexes[], float lsp[], int order)
 {
     int    i,k,m;
     float  wt[1];
-    float  lsp_hz[order];
+    // float  lsp_hz[order];
+    float *lsp_hz;
+    lsp_hz = (float *)malloc((order) * sizeof(float));
+
+
+
     const float * cb;
     float se;
 
@@ -1338,6 +1421,7 @@ void encode_lsps_scalar(int indexes[], float lsp[], int order)
 	cb = lsp_cb[i].cb;
 	indexes[i] = quantise(cb, &lsp_hz[i], wt, k, m, &se);
     }
+  free(lsp_hz);
 }
 
 /*---------------------------------------------------------------------------*\
@@ -1354,7 +1438,10 @@ void encode_lsps_scalar(int indexes[], float lsp[], int order)
 void decode_lsps_scalar(float lsp[], int indexes[], int order)
 {
     int    i,k;
-    float  lsp_hz[order];
+    // float  lsp_hz[order];
+    float *lsp_hz;
+    lsp_hz = (float *)malloc((order) * sizeof(float));
+
     const float * cb;
 
     for(i=0; i<order; i++) {
@@ -1367,6 +1454,7 @@ void decode_lsps_scalar(float lsp[], int indexes[], int order)
 
     for(i=0; i<order; i++)
 	lsp[i] = (PI/4000.0)*lsp_hz[i];
+  free(lsp_hz);
 }
 
 
@@ -1638,8 +1726,25 @@ void decode_lsps_diff_time(
 void encode_lsps_vq(int *indexes, float *x, float *xq, int order)
 {
   int i, n1, n2, n3;
-  float err[order], err2[order], err3[order];
-  float w[order], w2[order], w3[order];
+  // float err[order], err2[order], err3[order];
+  // float w[order], w2[order], w3[order];
+
+  // float err[order], err2[order], err3[order];
+  float *err;
+  err = (float *)malloc((order) * sizeof(float));
+  float *err2;
+  err2 = (float *)malloc((order) * sizeof(float));
+  float *err3;
+  err3 = (float *)malloc((order) * sizeof(float));  
+  
+  // float w[order], w2[order], w3[order];
+   float *w;
+  w = (float *)malloc((order) * sizeof(float));   
+  float *w2;
+  w2 = (float *)malloc((order) * sizeof(float));  
+  float *w3;
+  w3 = (float *)malloc((order) * sizeof(float));  
+
   const float *codebook1 = lsp_cbjvm[0].cb;
   const float *codebook2 = lsp_cbjvm[1].cb;
   const float *codebook3 = lsp_cbjvm[2].cb;
@@ -1671,6 +1776,13 @@ void encode_lsps_vq(int *indexes, float *x, float *xq, int order)
   indexes[0] = n1;
   indexes[1] = n2;
   indexes[2] = n3;
+
+  free(err);
+  free(err2);
+  free(err3);
+  free(w);
+  free(w2);
+  free(w3);
 }
 
 

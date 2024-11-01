@@ -156,9 +156,15 @@ void levinson_durbin(
   int order		/* order of the LPC analysis */
 )
 {
-  float a[order+1][order+1];
+  int i, j;         /* loop variables */
+  float **a;        /* pointer to pointers for 2D array */
   float sum, e, k;
-  int i,j;				/* loop variables */
+
+  // Allocate memory for the 2D array
+  a = (float **)malloc((order + 1) * sizeof(float *));
+  for (i = 0; i <= order; i++) {
+    a[i] = (float *)malloc((order + 1) * sizeof(float));
+  }
 
   e = R[0];				/* Equation 38a, Makhoul */
 
@@ -181,6 +187,11 @@ void levinson_durbin(
   for(i=1; i<=order; i++)
     lpcs[i] = a[order][i];
   lpcs[0] = 1.0;
+
+    for (i = 0; i <= order; i++) {
+    free(a[i]);
+  }
+  free(a);
 }
 
 /*---------------------------------------------------------------------------*\
@@ -267,7 +278,9 @@ void find_aks(
 )
 {
   float Wn[LPC_MAX_N];	/* windowed frame of Nsam speech samples */
-  float R[order+1];	/* order+1 autocorrelation values of Sn[] */
+  float *R; 
+  R = (float *)malloc((order + 1) * sizeof(float));	/* order+1 autocorrelation values of Sn[] */
+
   int i;
 
   assert(Nsam < LPC_MAX_N);
@@ -281,6 +294,8 @@ void find_aks(
     *E += a[i]*R[i];
   if (*E < 0.0)
     *E = 1E-12;
+
+  free(R);
 }
 
 /*---------------------------------------------------------------------------*\
